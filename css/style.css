@@ -1,0 +1,19 @@
+* {
+  font-family: 'Open Sans';
+  box-sizing: border-box;
+}
+
+.container {
+  width: 1300px;
+  margin: 0 auto;
+}
+
+.pagination-item {
+  display: inline-block;
+  margin-right: 5px;
+  min-width: 38px;
+  padding: 7px;
+  border: 1px solid gray;
+  border-radius: 19px;
+  text-align: center;
+}
