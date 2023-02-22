@@ -3,6 +3,7 @@
   const articlesEl = document.querySelector('#list-articles');
   const paginationEl = document.querySelector('#pagination');
   const articles = await getArticles(getNumberPageURLSearch());
+  const pagination = await getMetaPagination();
   if (articles === false) {
     return;
   }
@@ -39,8 +40,7 @@
   }
 
   async function createPagination() {
-    const pagination = await getMetaPagination();
-    const pages = pagination.pages;
+    const pages = pagination.pages; //нет ограничения на макс. стр.
     let currentPage = Number(getNumberPageURLSearch());
     let startPage = 0;
     let endPage = 5;
@@ -48,6 +48,7 @@
       startPage = currentPage - 3;
       endPage = currentPage + 2;
       const inStartEl = document.createElement('a');
+      inStartEl.classList.add('pagination-item-text');
       inStartEl.textContent = 'В начало';
       inStartEl.href = '?';
       paginationEl.append(inStartEl);
@@ -58,21 +59,33 @@
       let page = i + 1;
       linkPagEl.textContent = page;
       linkPagEl.href = '?page=' + page;
-
+      if (currentPage == page) {
+        addClassPagination(linkPagEl);
+      }
       paginationEl.append(linkPagEl);
     }
     const nestPageEl = document.createElement('a');
     nestPageEl.textContent = 'дальше';
+    nestPageEl.classList.add('pagination-item-text');
     nestPageEl.href = '?page=' + (currentPage + 1);
     paginationEl.append(nestPageEl);
+  }
+
+  function addClassPagination(item) {
+    item.classList.add('pagination-item-active');
   }
 
   function createItemsList() {
     articles.forEach((article) => {
       const itemEl = document.createElement('li');
+      itemEl.classList.add('item-article');
+      const iconEl = document.createElement('span');
+      iconEl.classList.add('icon-article');
       const linkEl = document.createElement('a');
+      linkEl.classList.add('link-article');
       linkEl.textContent = article.title;
       linkEl.href = 'post.html?id=' + article.id;
+      itemEl.append(iconEl);
       itemEl.append(linkEl);
       articlesEl.append(itemEl);
     });
@@ -80,8 +93,10 @@
 
   function createNotFound() {
     const titleNotFoundEl = document.createElement('h2');
+    titleNotFoundEl.classList.add('heading-not-found');
     titleNotFoundEl.textContent = 'Ошибка 404';
     const descNotFoundEl = document.createElement('p');
+    descNotFoundEl.classList.add('desc-not-found');
     descNotFoundEl.textContent = 'Отсутствуют статьи';
     blog.append(titleNotFoundEl);
     blog.append(descNotFoundEl);
